@@ -4,6 +4,9 @@ import { Map, TileLayer, Marker, ScaleControl, Polyline } from 'react-leaflet'
 import L from 'leaflet'
 import './App.css'
 
+const triangle_T = require('./triangle_T.svg')
+const triangle_A = require('./triangle_A.svg')
+
 export default class App extends Component {
   state = {
     lat: 50.06, 
@@ -14,20 +17,18 @@ export default class App extends Component {
   }
 
   makeIcon(category, label, heading) {
-    var elem;
-    if (category === 'tram') {
-      elem = <div className="vehicle vehicle_tram" style={{transform: 'rotate(' + heading + 'deg'}}>
-        <div style={{transform: 'rotate(' + -heading + 'deg'}}>{label}</div>
-      </div>;
-    } else {
-      elem = <div className="vehicle vehicle_bus">{label}</div>
-    }
+    const elem = <div class="vehicle">
+      <img src={category === 'tram' ? triangle_T : triangle_A} alt=""
+        className="vehicle__triangle"
+        style={{width: 50, transform: 'rotate(' + heading + 'deg)'}} />
+      <div className="vehicle__label">{label}</div>
+    </div>
 
     return new L.divIcon({
       html: ReactDOMServer.renderToStaticMarkup(elem),
       className: '',
-      iconSize: [22, 22],
-      iconAnchor: [11, 11],
+      iconSize: [50, 50],
+      iconAnchor: [25, 25],
     })
   }
 
@@ -82,7 +83,7 @@ export default class App extends Component {
         />
         <ScaleControl />
         {this.state.markers.map(({category, id, position, icon}, idx) => 
-          <Marker key={id} position={position} icon={icon} onClick={() => this.selectVehicle(category, id)}/>
+          <Marker key={id} position={position} icon={icon} onClick={() => this.selectVehicle(category, id)} />
         )}
         {this.state.activeVehicle && <Polyline positions={this.state.activeVehicle.path} color={this.state.activeVehicle.color} opacity="0.5" weight="5" />}      
       </Map>
