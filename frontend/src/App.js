@@ -36,12 +36,6 @@ export default class App extends Component {
     const apiUrl = '/api/vehicles'
     fetch(apiUrl)
       .then(res => res.json())
-      .then(vehicles => vehicles.map(item => ({
-        category: item.category,
-        id: item.id,
-        position: [item.latitude, item.longitude],
-        icon: this.makeIcon(item.category, item.line, item.heading),
-      })))
       .then(markers => this.setState({markers: markers}))
   }
 
@@ -54,15 +48,18 @@ export default class App extends Component {
     setTimeout(() => this.refreshLoop(), 5000);
   }
 
-  selectVehicle(category, id) {
-    this.setState({polyline: null})
-    const apiUrl = '/api/path?category=' + category + '&id=' + id
+  selectVehicle(category, vehicleId, tripId) {
+    this.setState({activeVehicle: null})
+    const apiUrl = '/api/path?category=' + category + '&vehicleId=' + vehicleId + '&tripId=' + tripId
     fetch(apiUrl)
       .then(res => res.json())
-      .then(path => this.setState({
+      .then(data => this.setState({
         activeVehicle: {
-          path: path,
-          color: category === 'tram' ? 'red' : 'blue'
+          category: category,
+          line: data.line,
+          direction: data.direction,
+          departures: data.departures,
+          path: data.path,
         }
       }))
   }
@@ -82,11 +79,39 @@ export default class App extends Component {
           subdomains="abcd"
         />
         <ScaleControl />
-        {this.state.markers.map(({category, id, position, icon}, idx) => 
-          <Marker key={id} position={position} icon={icon} onClick={() => this.selectVehicle(category, id)} />
+        {this.state.markers.map(({category, vehicleId, tripId, latitude, longitude, heading, line}, idx) => 
+          <Marker key={vehicleId} position={new L.LatLng(latitude, longitude)} icon={this.makeIcon(category, line, heading)}
+            onClick={() => this.selectVehicle(category, vehicleId, tripId)} />
         )}
-        {this.state.activeVehicle && <Polyline positions={this.state.activeVehicle.path} color={this.state.activeVehicle.color} opacity="0.5" weight="5" />}      
+        {this.state.activeVehicle && <Polyline positions={this.state.activeVehicle.path}
+          color={this.state.activeVehicle.category === 'tram' ? 'red' : 'blue'} opacity="0.5" weight="5" />}      
       </Map>
+      {this.state.activeVehicle && <aside class="right">
+        <table class="line_direction">
+          <tr>
+            <td>
+              <span className={"line line--" + this.state.activeVehicle.category}>{this.state.activeVehicle.line}</span>
+            </td>
+            <td className="direction">
+              {this.state.activeVehicle.direction}
+            </td>
+          </tr>
+        </table>
+
+        <table class="departures">
+          {this.state.activeVehicle.departures.map(departure => <tr class={"departure--" + departure.status.toLowerCase()}>
+            <td className="departure__time">
+              {departure.status === "STOPPING" ? ">>>" : departure.time}
+            </td>
+            <td className="departure__status">
+              <img src={require('./stop_' + departure.status.toLowerCase() + '.svg')} alt={departure.status} className="departure__icon" />
+            </td>
+            <td className="departure__stop_name">
+              {departure.status === 'DEPARTED' ? <s>{departure.stopName}</s> : departure.stopName}
+            </td>
+          </tr>)}
+        </table>
+      </aside>}
     </>
   }
 }

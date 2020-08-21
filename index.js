@@ -10,7 +10,8 @@ function parseVehiclesJson(data, category) {
   return data.vehicles
     .filter(vehicle => !vehicle.isDeleted && vehicle.latitude && vehicle.longitude)
     .map(vehicle => ({
-      id: vehicle.id,
+      vehicleId: vehicle.id,
+      tripId: vehicle.tripId,
       latitude: vehicle.latitude / 3_600_000,
       longitude: vehicle.longitude / 3_600_000,
       heading: vehicle.heading,
@@ -37,19 +38,33 @@ app.get('/api/vehicles', (req, res) => {
 
 app.get('/api/path', (req, res) => {
   var category = req.query.category
-  var id = req.query.id
+  var vehicleId = req.query.vehicleId
+  var tripId = req.query.tripId
   
   if (category == 'tram') {
-    url = 'http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=' + id
+    pathInfoUrl = 'http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=' + vehicleId
+    tripPassagesUrl = 'http://www.ttss.krakow.pl/internetservice/services/tripInfo/tripPassages?tripId=' + tripId
   } else if (category == 'bus') {
-    url = 'http://91.223.13.70/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=' + id
+    pathInfoUrl = 'http://91.223.13.70/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=' + vehicleId
+    tripPassagesUrl = 'http://91.223.13.70/internetservice/services/tripInfo/tripPassages?tripId=' + tripId
   }
 
-  axios.get(url)
-    .then(response => {
-      const points = response.data.paths[0].wayPoints.map(point => [point.lat / 3_600_000, point.lon / 3_600_000])
-      res.send(points)
-    })
+  axios.all([
+    axios.get(tripPassagesUrl),
+    axios.get(pathInfoUrl)
+  ]).then(axios.spread((tripPassagesResponse, pathInfoResponse) => {
+    const line = tripPassagesResponse.data.routeName
+    const direction = tripPassagesResponse.data.directionText
+    const departures = tripPassagesResponse.data.old
+      .concat(tripPassagesResponse.data.actual)
+      .map(item => ({
+        time: item.actualTime,
+        stopName: item.stop.name,
+        status: item.status,
+      }))
+    const path = pathInfoResponse.data.paths[0].wayPoints.map(point => [point.lat / 3_600_000, point.lon / 3_600_000])
+    res.send({line, direction, departures, path})
+  }))
 })
 
 app.get('*', (req, res) => {
