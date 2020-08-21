@@ -106,7 +106,7 @@ html, body, #root {
 }
 
 .departure--departed {
-  opacity: 0.25;
+  opacity: 0.2;
 }
 
 .departure--stopping {
