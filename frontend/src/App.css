@@ -58,14 +58,14 @@ html, body, #root {
 
 .line {
   display: inline-block;
-  width: 3rem;
-  height: 3rem;
-  line-height: 3rem;
+  width: 2.7rem;
+  height: 2.7rem;
+  line-height: 2.7rem;
   text-align: center;
   color: white;
   font-weight: bold;
-  font-size: 1.4rem;
-  margin-right: 1rem;
+  font-size: 1.3rem;
+  margin-right: 0.5rem;
 }
 
 .line--tram {
@@ -81,7 +81,7 @@ html, body, #root {
 
 .direction {
   font-weight: bold;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
 }
 
 .departures {
