@@ -82,7 +82,7 @@ export default class App extends Component {
         />
         <ScaleControl />
         {this.state.markers.map(({category, id, position, icon}, idx) => 
-            <Marker key={id} position={position} icon={icon} onClick={() => this.selectVehicle(category, id)}/>
+          <Marker key={id} position={position} icon={icon} onClick={() => this.selectVehicle(category, id)}/>
         )}
         {this.state.activeVehicle && <Polyline positions={this.state.activeVehicle.path} color={this.state.activeVehicle.color} opacity="0.5" weight="5" />}      
       </Map>
