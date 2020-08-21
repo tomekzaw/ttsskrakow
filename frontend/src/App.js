@@ -29,21 +29,25 @@ export default class App extends Component {
   }
 
   refreshVehicles() {
-    const {markers} = this.state;
     const apiUrl = '/api/vehicles'
     fetch(apiUrl)
       .then(res => res.json())
-      .then(vehicles => vehicles.map(item => markers.push({
+      .then(vehicles => vehicles.map(item => ({
         category: item.category,
         id: item.id,
         position: [item.latitude, item.longitude],
         icon: this.makeIcon(item.category, item.line, item.heading),
       })))
-      .then(() => this.setState({markers}))
+      .then(markers => this.setState({markers: markers}))
   }
 
   componentDidMount() {  
+    this.refreshLoop();
+  }
+
+  refreshLoop() {
     this.refreshVehicles();
+    setTimeout(() => this.refreshLoop(), 5000);
   }
 
   showPath(category, id) {
@@ -54,7 +58,7 @@ export default class App extends Component {
       .then(positions => this.setState({
         polyline: {
           positions: positions,
-          color: category == 'tram' ? 'red' : 'blue'
+          color: category === 'tram' ? 'red' : 'blue'
         }
       }))
   }
