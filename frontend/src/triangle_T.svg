@@ -17,8 +17,8 @@ viewBox="0 0 1863 1863"
  <g id="Warstwa_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
   <rect class="fil0" width="1863" height="1863"/>
-  <path class="fil1" d="M931 466c258,0 466,208 466,465 0,258 -208,466 -466,466 -257,0 -465,-208 -465,-466 0,-257 208,-465 465,-465z"/>
   <polygon class="fil1" points="931,0 677,339 1185,339 "/>
-  <path class="fil2 str0" d="M931 423c281,0 508,228 508,508 0,281 -227,508 -508,508 -280,0 -508,-227 -508,-508 0,-280 228,-508 508,-508z"/>
+  <polygon class="fil1" points="508,508 1355,508 1355,1355 508,1355 "/>
+  <polygon class="fil2 str0" points="466,466 1397,466 1397,1397 466,1397 "/>
  </g>
 </svg>
