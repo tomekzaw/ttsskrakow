@@ -45,15 +45,31 @@ html, body, #root {
 
 .right {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 75%;
   background: white;
-  border-left: 3px solid lightgray;
   z-index: 2;
-  padding: 1.5rem;
   overflow-y: scroll;
+}
+
+@media screen and (min-width: 641px) {
+  .right {
+    top: 0;
+    bottom: 0;
+    left: 75%;
+    right: 0;
+    border-left: 2px solid lightgray;
+    padding: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .right {
+    top: 50%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 2px solid lightgray;
+    padding: 1rem 1.5rem;
+  }
 }
 
 .line {
@@ -85,7 +101,7 @@ html, body, #root {
 }
 
 .departures {
-  margin: 1rem 0;
+  margin-top: 1rem;
   border-collapse: collapse;
 }
 
