@@ -85,7 +85,7 @@ export default class App extends Component {
         {this.state.activeVehicle && <Polyline positions={this.state.activeVehicle.path}
           color={this.state.activeVehicle.category === 'tram' ? 'red' : 'blue'} opacity="0.5" weight="5" />}      
       </Map>
-      {this.state.activeVehicle && <aside class="right">
+      {(this.state.activeVehicle?.line || this.state.activeVehicle?.direction) && <aside class="right">
         <table class="line_direction">
           <tr>
             <td>
