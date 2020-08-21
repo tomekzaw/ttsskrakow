@@ -61,8 +61,9 @@ export default class App extends Component {
 
     return <Map center={position} zoom={this.state.zoom} onClick={() => this.hidePath()}>
       <TileLayer
-        attribution='Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
-        url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+        subdomains="abcd"
       />
       <ScaleControl />
       {this.state.markers.map(({id, position, icon}, idx) => 
