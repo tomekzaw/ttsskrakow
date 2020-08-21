@@ -36,7 +36,7 @@ export default class App extends Component {
     const apiUrl = '/api/vehicles'
     fetch(apiUrl)
       .then(res => res.json())
-      .then(markers => this.setState({markers: markers}))
+      .then(markers => this.setState({markers}))
   }
 
   componentDidMount() {  
@@ -54,7 +54,7 @@ export default class App extends Component {
       .then(res => res.json())
       .then(data => this.setState({
         activeVehicle: {
-          category: category,
+          category,
           line: data.line,
           direction: data.direction,
           departures: data.departures,
