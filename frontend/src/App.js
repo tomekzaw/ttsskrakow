@@ -53,37 +53,39 @@ export default class App extends Component {
     setTimeout(() => this.refreshLoop(), 5000);
   }
 
-  showPath(category, id) {
+  selectVehicle(category, id) {
     this.setState({polyline: null})
     const apiUrl = '/api/path?category=' + category + '&id=' + id
     fetch(apiUrl)
       .then(res => res.json())
-      .then(positions => this.setState({
-        polyline: {
-          positions: positions,
+      .then(path => this.setState({
+        activeVehicle: {
+          path: path,
           color: category === 'tram' ? 'red' : 'blue'
         }
       }))
   }
 
-  hidePath() {
-    this.setState({polyline: null})
+  unselectVehicle() {
+    this.setState({activeVehicle: null})
   }
 
   render() {
     const position = [this.state.lat, this.state.lng]
 
-    return <Map center={position} zoom={this.state.zoom} onClick={() => this.hidePath()}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        subdomains="abcd"
-      />
-      <ScaleControl />
-      {this.state.markers.map(({category, id, position, icon}, idx) => 
-          <Marker key={id} position={position} icon={icon} onClick={() => this.showPath(category, id)}/>
-      )}
-      {this.state.polyline && <Polyline positions={this.state.polyline.positions} color={this.state.polyline.color} opacity="0.5" weight="5" />}      
-    </Map>
+    return <>
+      <Map center={position} zoom={this.state.zoom} onClick={() => this.unselectVehicle()}>
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          subdomains="abcd"
+        />
+        <ScaleControl />
+        {this.state.markers.map(({category, id, position, icon}, idx) => 
+            <Marker key={id} position={position} icon={icon} onClick={() => this.selectVehicle(category, id)}/>
+        )}
+        {this.state.activeVehicle && <Polyline positions={this.state.activeVehicle.path} color={this.state.activeVehicle.color} opacity="0.5" weight="5" />}      
+      </Map>
+    </>
   }
 }
