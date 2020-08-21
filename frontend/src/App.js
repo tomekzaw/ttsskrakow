@@ -49,7 +49,6 @@ export default class App extends Component {
   }
 
   selectVehicle(category, vehicleId, tripId) {
-    this.setState({activeVehicle: null})
     const apiUrl = '/api/path?category=' + category + '&vehicleId=' + vehicleId + '&tripId=' + tripId
     fetch(apiUrl)
       .then(res => res.json())
