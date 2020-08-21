@@ -14,14 +14,17 @@ export default class App extends Component {
   }
 
   makeIcon(category, label, heading) {
+    var elem;
+    if (category === 'tram') {
+      elem = <div className="vehicle vehicle_tram" style={{transform: 'rotate(' + heading + 'deg'}}>
+        <div style={{transform: 'rotate(' + -heading + 'deg'}}>{label}</div>
+      </div>;
+    } else {
+      elem = <div className="vehicle vehicle_bus">{label}</div>
+    }
+
     return new L.divIcon({
-      html: ReactDOMServer.renderToStaticMarkup(
-        <div className={'vehicle vehicle_' + category} style={{transform: 'rotate(' + heading + 'deg'}}>
-          <div style={{transform: 'rotate(' + -heading + 'deg'}}>
-            {label}
-          </div>
-        </div>
-      ),
+      html: ReactDOMServer.renderToStaticMarkup(elem),
       className: '',
       iconSize: [22, 22],
       iconAnchor: [11, 11],
