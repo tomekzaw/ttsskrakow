@@ -1,0 +1,33 @@
+@import '~leaflet/dist/leaflet.css';
+
+html, body, #root {
+  margin: 0;
+  height: 100%;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+.vehicle {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 0.9rem;
+}
+
+.vehicle_T {
+  background: rgba(255, 0, 0, 0.5);
+  border: 3px solid rgba(240, 0, 0, 0.5);
+}
+
+.vehicle_A {
+  background: rgba(0, 0, 255, 0.5);
+  border: 3px solid rgba(0, 0, 240, 0.5);
+  border-radius: 50%;
+}
