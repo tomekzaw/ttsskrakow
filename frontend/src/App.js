@@ -30,13 +30,13 @@ export default class App extends Component {
 
   refreshVehicles() {
     const {markers} = this.state;
-    const apiUrl = 'http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles?positionType=CORRECTED'
+    const apiUrl = '/api/vehicles'
     fetch(apiUrl)
       .then(res => res.json())
-      .then(data => data.vehicles.map((item) => !item.isDeleted && item.latitude && item.longitude && markers.push({
+      .then(vehicles => vehicles.map(item => markers.push({
         id: item.id,
-        position: [item.latitude / 3600000, item.longitude / 3600000],
-        icon: this.makeIcon(item.name.split(' ')[0], item.heading),
+        position: [item.latitude, item.longitude],
+        icon: this.makeIcon(item.line, item.heading),
       })))
       .then(() => this.setState({markers}))
   }
@@ -46,13 +46,10 @@ export default class App extends Component {
   }
 
   showPath(id) {
-    const apiUrl = 'http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=' + id
+    const apiUrl = '/api/path?id=' + id
     fetch(apiUrl)
       .then(res => res.json())
-      .then(data => {
-        const newPolyline = data.paths[0].wayPoints.map((item) => [item.lat / 3600000, item.lon / 3600000])
-        this.setState({polyline: newPolyline})
-      });
+      .then(points => this.setState({polyline: points}));
   }
 
   hidePath() {
