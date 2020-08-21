@@ -13,18 +13,18 @@ export default class App extends Component {
     polyline: null,
   }
 
-  makeIcon(label, heading) {
+  makeIcon(category, label, heading) {
     return new L.divIcon({
       html: ReactDOMServer.renderToStaticMarkup(
-        <div className="vehicle vehicle_T" style={{transform: 'rotate(' + heading + 'deg'}}>
+        <div className={'vehicle vehicle_' + category} style={{transform: 'rotate(' + heading + 'deg'}}>
           <div style={{transform: 'rotate(' + -heading + 'deg'}}>
             {label}
           </div>
         </div>
       ),
       className: '',
-      iconSize: [24, 24],
-      iconAnchor: [12, 12],
+      iconSize: [22, 22],
+      iconAnchor: [11, 11],
     })
   }
 
@@ -34,9 +34,10 @@ export default class App extends Component {
     fetch(apiUrl)
       .then(res => res.json())
       .then(vehicles => vehicles.map(item => markers.push({
+        category: item.category,
         id: item.id,
         position: [item.latitude, item.longitude],
-        icon: this.makeIcon(item.line, item.heading),
+        icon: this.makeIcon(item.category, item.line, item.heading),
       })))
       .then(() => this.setState({markers}))
   }
@@ -45,11 +46,17 @@ export default class App extends Component {
     this.refreshVehicles();
   }
 
-  showPath(id) {
-    const apiUrl = '/api/path?id=' + id
+  showPath(category, id) {
+    this.setState({polyline: null})
+    const apiUrl = '/api/path?category=' + category + '&id=' + id
     fetch(apiUrl)
       .then(res => res.json())
-      .then(points => this.setState({polyline: points}));
+      .then(positions => this.setState({
+        polyline: {
+          positions: positions,
+          color: category == 'tram' ? 'red' : 'blue'
+        }
+      }))
   }
 
   hidePath() {
@@ -66,10 +73,10 @@ export default class App extends Component {
         subdomains="abcd"
       />
       <ScaleControl />
-      {this.state.markers.map(({id, position, icon}, idx) => 
-          <Marker key={id} position={position} icon={icon} onClick={() => this.showPath(id)}/>
+      {this.state.markers.map(({category, id, position, icon}, idx) => 
+          <Marker key={id} position={position} icon={icon} onClick={() => this.showPath(category, id)}/>
       )}
-      {this.state.polyline && <Polyline positions={this.state.polyline} color="red" opacity="0.5" weight="5" />}      
+      {this.state.polyline && <Polyline positions={this.state.polyline.positions} color={this.state.polyline.color} opacity="0.5" weight="5" />}      
     </Map>
   }
 }

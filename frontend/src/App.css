@@ -15,18 +15,18 @@ html, body, #root {
   font-weight: bold;
   text-align: center;
   vertical-align: middle;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-  font-size: 0.9rem;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  font-size: 0.8rem;
 }
 
-.vehicle_T {
+.vehicle_tram {
   background: rgba(255, 0, 0, 0.5);
   border: 3px solid rgba(240, 0, 0, 0.5);
 }
 
-.vehicle_A {
+.vehicle_bus {
   background: rgba(0, 0, 255, 0.5);
   border: 3px solid rgba(0, 0, 240, 0.5);
   border-radius: 50%;
