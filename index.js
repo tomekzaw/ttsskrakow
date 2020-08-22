@@ -40,7 +40,7 @@ app.get('/api/path', (req, res) => {
   var category = req.query.category
   var vehicleId = req.query.vehicleId
   var tripId = req.query.tripId
-  
+
   if (category == 'tram') {
     pathInfoUrl = 'http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=' + vehicleId
     tripPassagesUrl = 'http://www.ttss.krakow.pl/internetservice/services/tripInfo/tripPassages?tripId=' + tripId
@@ -63,7 +63,7 @@ app.get('/api/path', (req, res) => {
         status: item.status,
       }))
     const path = pathInfoResponse.data.paths[0].wayPoints.map(point => [point.lat / 3_600_000, point.lon / 3_600_000])
-    res.send({line, direction, departures, path})
+    res.send({category, line, direction, departures, path})
   }))
 })
 
