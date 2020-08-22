@@ -30,7 +30,7 @@ export default function VehicleTimetable({
           <img src={process.env.PUBLIC_URL + '/stop_' + departure.status.toLowerCase() + '.svg'} alt={departure.status} className="departure__icon" />
         </td>
         <td className="departure__stop_name">
-          {departure.status === 'DEPARTED' ? <s>{departure.stopName}</s> : departure.stopName}
+          {departure.stopName}
         </td>
       </tr>)}
     </table>
