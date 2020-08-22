@@ -17,8 +17,7 @@ export default function VehiclesMap({ setActiveVehicle, activeVehicleData }) {
   }, [])
 
   useEffect(() => {
-    const apiUrl = '/api/vehicles'
-    fetch(apiUrl)
+    fetch('/api/vehicles')
       .then(res => res.json())
       .then(setVehicles)
   }, [time])
