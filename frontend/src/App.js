@@ -21,6 +21,6 @@ export default function App() {
 
   return <>
     <VehiclesMap setActiveVehicle={setActiveVehicle} activeVehicleData={activeVehicleData} />
-    {activeVehicle && <VehicleTimetable activeVehicleData={activeVehicleData} />}
+    {activeVehicleData && activeVehicleData.line && <VehicleTimetable activeVehicleData={activeVehicleData} />}
   </>
 }

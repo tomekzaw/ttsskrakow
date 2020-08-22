@@ -1,12 +1,9 @@
 import React from 'react'
 import './VehicleTimetable.css'
 
-export default function VehicleTimetable({ activeVehicleData }) {
-  if (!activeVehicleData) {
-    return <div className="details"></div>
-  }
-
-  const {category, line, direction, departures} = activeVehicleData
+export default function VehicleTimetable({
+  activeVehicleData: {category, line, direction, departures}
+}) {
   return <div className="details">
     <table class="line_direction">
       <tr>
