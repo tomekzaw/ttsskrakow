@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import './VehicleTimetable.css'
 
 export default function VehicleTimetable({
+  activeVehicleData,
   activeVehicleData: {category, line, direction, departures}
 }) {
-  return <div className="details">
+  const detailsRef = useRef()
+
+  useEffect(() => detailsRef.current.scrollTo(0, 0), [activeVehicleData])
+
+  return <div className="details" ref={detailsRef}>
     <table class="line_direction">
       <tr>
         <td>
