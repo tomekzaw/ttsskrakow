@@ -51,12 +51,12 @@
 
 .line--tram {
   background: rgba(255, 0, 0, 0.5);
-  border: 3px solid rgba(255, 0, 0, 0.75);
+  border: 2px solid rgba(255, 0, 0, 0.75);
 }
 
 .line--bus {
   background: rgba(0, 0, 255, 0.5);
-  border: 3px solid rgba(0, 0, 255, 0.75);
+  border: 2px solid rgba(0, 0, 255, 0.75);
   border-radius: 50%;
 }
 
