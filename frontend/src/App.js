@@ -7,6 +7,20 @@ export default function App() {
   const [activeVehicle, setActiveVehicle] = useState()
   const [activeVehicleData, setActiveVehicleData] = useState()
 
+  const [time, setTime] = useState(Date.now())
+  const [vehicles, setVehicles] = useState([])
+
+  useEffect(() => {
+    const interval = setInterval(() => setTime(Date.now()), 3000);
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    fetch('/api/vehicles')
+      .then(res => res.json())
+      .then(setVehicles)
+  }, [time])
+
   useEffect(() => {
     if (!activeVehicle) {
       setActiveVehicleData()
@@ -17,10 +31,10 @@ export default function App() {
     fetch('/api/path?category=' + category + '&vehicleId=' + vehicleId + '&tripId=' + tripId)
       .then(res => res.json())
       .then(data => setActiveVehicleData(data))
-  }, [activeVehicle])
+  }, [activeVehicle, time])
 
   return <>
-    <VehiclesMap setActiveVehicle={setActiveVehicle} activeVehicleData={activeVehicleData} />
+    <VehiclesMap vehicles={vehicles} setActiveVehicle={setActiveVehicle} activeVehicleData={activeVehicleData} />
     {activeVehicleData && activeVehicleData.line && <VehicleTimetable activeVehicleData={activeVehicleData} />}
   </>
 }

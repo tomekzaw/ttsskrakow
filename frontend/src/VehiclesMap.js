@@ -1,26 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Map, TileLayer, ScaleControl } from 'react-leaflet'
 import VehicleMarkers from './VehicleMarkers.js'
 import ActiveVehiclePolyline from './ActiveVehiclePolyline.js'
 import './VehiclesMap.css'
 
-export default function VehiclesMap({ setActiveVehicle, activeVehicleData }) {
+export default function VehiclesMap({ vehicles, setActiveVehicle, activeVehicleData }) {
   const position = [50.04, 19.96]
   const zoom = 12
-
-  const [time, setTime] = useState(Date.now())
-  const [vehicles, setVehicles] = useState([])
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(Date.now()), 3000);
-    return () => clearInterval(interval)
-  }, [])
-
-  useEffect(() => {
-    fetch('/api/vehicles')
-      .then(res => res.json())
-      .then(setVehicles)
-  }, [time])
 
   function handleClick() {
     setActiveVehicle()
