@@ -3,7 +3,9 @@
   background: white;
   z-index: 2;
   overflow-y: scroll;
+  padding: 1rem 1.5rem 0 1.5rem;
 }
+
 @media screen and (min-width: 960px) {
   .details {
     top: 0;
@@ -11,7 +13,6 @@
     left: 75%;
     right: 0;
     border-left: 2px solid lightgray;
-    padding: 1.5rem;
   }
 }
 
@@ -22,7 +23,6 @@
     left: 50%;
     right: 0;
     border-left: 2px solid lightgray;
-    padding: 1.5rem;
   }
 }
 
@@ -33,7 +33,6 @@
     left: 0;
     right: 0;
     border-top: 2px solid lightgray;
-    padding: 1rem 1.5rem;
   }
 }
 

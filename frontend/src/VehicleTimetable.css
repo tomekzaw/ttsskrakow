@@ -1,6 +1,7 @@
 .departures {
-  margin-top: 1rem;
   border-collapse: collapse;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .departure--departed {
