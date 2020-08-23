@@ -11,15 +11,17 @@ export default function VehicleDetails({
   useEffect(() => detailsRef.current.scrollTo(0, 0), [activeVehicleTimetable])
 
   return <div className="details" ref={detailsRef}>
-    <table class="line_direction">
-      <tr>
-        <td>
-          <span className={"line line--" + category}>{line}</span>
-        </td>
-        <td className="direction">
-          {direction}
-        </td>
-      </tr>
+    <table className="line_direction">
+      <tbody>
+        <tr>
+          <td>
+            <span className={"line line--" + category}>{line}</span>
+          </td>
+          <td className="direction">
+            {direction}
+          </td>
+        </tr>
+      </tbody>
     </table>
 
     <VehicleTimetable departures={departures} />
