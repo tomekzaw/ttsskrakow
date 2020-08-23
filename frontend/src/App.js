@@ -28,7 +28,7 @@ export default function App() {
     }
 
     const {category, vehicleId, tripId} = activeVehicle
-    fetch('/api/path?category=' + category + '&vehicleId=' + vehicleId + '&tripId=' + tripId)
+    fetch(`/api/path?category=${category}&vehicleId=${vehicleId}&tripId=${tripId}`)
       .then(res => res.json())
       .then(data => setActiveVehicleData(data))
   }, [activeVehicle, time])
