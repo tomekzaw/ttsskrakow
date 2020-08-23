@@ -39,14 +39,14 @@
 
 .line {
   display: inline-block;
-  width: 2.7rem;
-  height: 2.7rem;
-  line-height: 2.7rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  line-height: 2.4rem;
   text-align: center;
   color: white;
   font-weight: bold;
-  font-size: 1.3rem;
-  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  margin-right: 0.4rem;
 }
 
 .line--tram {
@@ -62,5 +62,5 @@
 
 .direction {
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
