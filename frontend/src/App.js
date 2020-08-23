@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import VehiclesMap from './VehiclesMap'
 import VehicleDetails from './VehicleDetails'
 import './App.css'
@@ -16,9 +17,7 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    fetch('/api/vehicles')
-      .then(res => res.json())
-      .then(setVehicles)
+    axios.get('/api/vehicles').then(res => setVehicles(res.data))
   }, [time])
 
   useEffect(() => {
@@ -28,9 +27,8 @@ export default function App() {
     }
 
     const {category, vehicleId, tripId} = activeVehicle
-    fetch(`/api/path?category=${category}&vehicleId=${vehicleId}&tripId=${tripId}`)
-      .then(res => res.json())
-      .then(data => setActiveVehicleData(data))
+    axios.get(`/api/path?category=${category}&vehicleId=${vehicleId}&tripId=${tripId}`)
+      .then(res => setActiveVehicleData(res.data))
   }, [activeVehicle, time])
 
   return <>
