@@ -38,10 +38,9 @@ app.get('/api/vehicles', (req, res) => {
 })
 
 app.get('/api/path', (req, res) => {
-  const category = req.query.category
-  const vehicleId = req.query.vehicleId
+  const {category, vehicleId} = req.query
 
-  let color = category === 'tram' ? 'red' : 'blue'
+  const color = category === 'tram' ? 'red' : 'blue'
   const baseUrl = category === 'tram' ? 'http://www.ttss.krakow.pl' : 'http://91.223.13.70'
   const url = `${baseUrl}/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=${vehicleId}`
 
