@@ -27,8 +27,13 @@ export default function App() {
     }
 
     const {category, vehicleId, tripId} = activeVehicle
-    axios.get(`/api/path?category=${category}&vehicleId=${vehicleId}&tripId=${tripId}`)
-      .then(res => setActiveVehicleData(res.data))
+    const url = `/api/path?category=${category}&vehicleId=${vehicleId}&tripId=${tripId}`
+    let cancel
+    axios.get(url, {
+      cancelToken: new axios.CancelToken(c => cancel = c)
+    }).then(res => setActiveVehicleData(res.data))
+
+    return () => cancel()
   }, [activeVehicle, time])
 
   return <>
