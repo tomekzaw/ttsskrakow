@@ -1,0 +1,66 @@
+.details {
+  position: absolute;
+  background: white;
+  z-index: 2;
+  overflow-y: scroll;
+}
+@media screen and (min-width: 960px) {
+  .details {
+    top: 0;
+    bottom: 0;
+    left: 75%;
+    right: 0;
+    border-left: 2px solid lightgray;
+    padding: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 959px) {
+  .details {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: 0;
+    border-left: 2px solid lightgray;
+    padding: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .details {
+    top: 50%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 2px solid lightgray;
+    padding: 1rem 1.5rem;
+  }
+}
+
+.line {
+  display: inline-block;
+  width: 2.7rem;
+  height: 2.7rem;
+  line-height: 2.7rem;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-right: 0.5rem;
+}
+
+.line--tram {
+  background: rgba(255, 0, 0, 0.5);
+  border: 2px solid rgba(255, 0, 0, 0.75);
+}
+
+.line--bus {
+  background: rgba(0, 0, 255, 0.5);
+  border: 2px solid rgba(0, 0, 255, 0.75);
+  border-radius: 50%;
+}
+
+.direction {
+  font-weight: bold;
+  font-size: 1.3rem;
+}

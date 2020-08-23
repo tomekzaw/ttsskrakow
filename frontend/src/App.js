@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import VehiclesMap from './VehiclesMap'
-import VehicleTimetable from './VehicleTimetable'
+import VehicleDetails from './VehicleDetails'
 import './App.css'
 
 export default function App() {
@@ -35,6 +35,6 @@ export default function App() {
 
   return <>
     <VehiclesMap vehicles={vehicles} setActiveVehicle={setActiveVehicle} activeVehicleData={activeVehicleData} />
-    {activeVehicleData && activeVehicleData.line && <VehicleTimetable activeVehicleData={activeVehicleData} />}
+    {activeVehicleData && activeVehicleData.line && <VehicleDetails activeVehicleData={activeVehicleData} />}
   </>
 }
