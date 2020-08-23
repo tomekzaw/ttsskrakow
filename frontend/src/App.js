@@ -6,6 +6,7 @@ import './App.css'
 
 export default function App() {
   const [activeVehicle, setActiveVehicle] = useState()
+  const [activeVehiclePolyline, setActiveVehiclePolyline] = useState()
   const [activeVehicleData, setActiveVehicleData] = useState()
 
   const [time, setTime] = useState(Date.now())
@@ -22,22 +23,42 @@ export default function App() {
 
   useEffect(() => {
     if (!activeVehicle) {
-      setActiveVehicleData()
+      setActiveVehiclePolyline()
       return
     }
 
-    const {category, vehicleId, tripId} = activeVehicle
-    const url = `/api/path?category=${category}&vehicleId=${vehicleId}&tripId=${tripId}`
+    const {category, vehicleId} = activeVehicle
+    const url = `/api/path?category=${category}&vehicleId=${vehicleId}`
     let cancel
     axios.get(url, {
       cancelToken: new axios.CancelToken(c => cancel = c)
-    }).then(res => setActiveVehicleData(res.data))
+    }).then(res => {
+      setActiveVehiclePolyline(res.data)
+      console.log(res.data)
+    })
 
     return () => cancel()
-  }, [activeVehicle, time])
+
+  }, [activeVehicle])
+
+  // useEffect(() => {
+  //   if (!activeVehicle) {
+  //     setActiveVehicleData()
+  //     return
+  //   }
+
+  //   const {category, vehicleId, tripId} = activeVehicle
+  //   const url = `/api/timetable?category=${category}&vehicleId=${vehicleId}&tripId=${tripId}`
+  //   let cancel
+  //   axios.get(url, {
+  //     cancelToken: new axios.CancelToken(c => cancel = c)
+  //   }).then(res => setActiveVehicleData(res.data))
+
+  //   return () => cancel()
+  // }, [activeVehicle, time])
 
   return <>
-    <VehiclesMap vehicles={vehicles} setActiveVehicle={setActiveVehicle} activeVehicleData={activeVehicleData} />
+    <VehiclesMap vehicles={vehicles} setActiveVehicle={setActiveVehicle} activeVehiclePolyline={activeVehiclePolyline} />
     {activeVehicleData && activeVehicleData.line && <VehicleDetails activeVehicleData={activeVehicleData} />}
   </>
 }

@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const axios = require('axios');
+const { send } = require('process');
 
 const app = express()
 
@@ -37,6 +38,20 @@ app.get('/api/vehicles', (req, res) => {
 })
 
 app.get('/api/path', (req, res) => {
+  const category = req.query.category
+  const vehicleId = req.query.vehicleId
+
+  let color = category === 'tram' ? 'red' : 'blue'
+  const baseUrl = category === 'tram' ? 'http://www.ttss.krakow.pl' : 'http://91.223.13.70'
+  const url = `${baseUrl}/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=${vehicleId}`
+
+  axios.get(url).then(response => {
+    const path = response.data.paths[0].wayPoints.map(point => [point.lat / 3_600_000, point.lon / 3_600_000])
+    res.send({ path, color })
+  })
+})
+
+app.get('/api/timetable', (req, res) => {
   var category = req.query.category
   var vehicleId = req.query.vehicleId
   var tripId = req.query.tripId

@@ -4,7 +4,7 @@ import VehicleMarkers from './VehicleMarkers.js'
 import ActiveVehiclePolyline from './ActiveVehiclePolyline.js'
 import './VehiclesMap.css'
 
-export default function VehiclesMap({ vehicles, setActiveVehicle, activeVehicleData }) {
+export default function VehiclesMap({ vehicles, setActiveVehicle, activeVehiclePolyline }) {
   const center = [50.04, 19.96]
   const zoom = 12
 
@@ -20,6 +20,6 @@ export default function VehiclesMap({ vehicles, setActiveVehicle, activeVehicleD
     />
     <ScaleControl />
     <VehicleMarkers vehicles={vehicles} setActiveVehicle={setActiveVehicle} />
-    {activeVehicleData && <ActiveVehiclePolyline activeVehicleData={activeVehicleData} />}
+    {activeVehiclePolyline && <ActiveVehiclePolyline activeVehiclePolyline={activeVehiclePolyline} />}
   </Map>
 }
