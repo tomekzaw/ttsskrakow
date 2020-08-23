@@ -3,12 +3,12 @@ import VehicleTimetable from './VehicleTimetable'
 import './VehicleDetails.css'
 
 export default function VehicleDetails({
-  activeVehicleData,
-  activeVehicleData: {category, line, direction, departures}
+  activeVehicleTimetable,
+  activeVehicleTimetable: {category, line, direction, departures}
 }) {
   const detailsRef = useRef()
 
-  useEffect(() => detailsRef.current.scrollTo(0, 0), [activeVehicleData])
+  useEffect(() => detailsRef.current.scrollTo(0, 0), [activeVehicleTimetable])
 
   return <div className="details" ref={detailsRef}>
     <table class="line_direction">

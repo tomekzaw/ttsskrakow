@@ -7,7 +7,7 @@ import './App.css'
 export default function App() {
   const [activeVehicle, setActiveVehicle] = useState()
   const [activeVehiclePolyline, setActiveVehiclePolyline] = useState()
-  const [activeVehicleData, setActiveVehicleData] = useState()
+  const [activeVehicleTimetable, setActiveVehicleTimetable] = useState()
 
   const [time, setTime] = useState(Date.now())
   const [vehicles, setVehicles] = useState([])
@@ -22,43 +22,27 @@ export default function App() {
   }, [time])
 
   useEffect(() => {
-    if (!activeVehicle) {
-      setActiveVehiclePolyline()
-      return
-    }
-
+    if (!activeVehicle) return
     const {category, vehicleId} = activeVehicle
     const url = `/api/path?category=${category}&vehicleId=${vehicleId}`
-    let cancel
-    axios.get(url, {
-      cancelToken: new axios.CancelToken(c => cancel = c)
-    }).then(res => {
-      setActiveVehiclePolyline(res.data)
-      console.log(res.data)
-    })
-
-    return () => cancel()
-
+    axios.get(url).then(res => setActiveVehiclePolyline(res.data))
   }, [activeVehicle])
 
-  // useEffect(() => {
-  //   if (!activeVehicle) {
-  //     setActiveVehicleData()
-  //     return
-  //   }
+  useEffect(() => {
+    if (!activeVehicle) return
+    const {category, tripId} = activeVehicle
+    const url = `/api/timetable?category=${category}&tripId=${tripId}`
+    axios.get(url).then(res => setActiveVehicleTimetable(res.data))
+  }, [activeVehicle, time])
 
-  //   const {category, vehicleId, tripId} = activeVehicle
-  //   const url = `/api/timetable?category=${category}&vehicleId=${vehicleId}&tripId=${tripId}`
-  //   let cancel
-  //   axios.get(url, {
-  //     cancelToken: new axios.CancelToken(c => cancel = c)
-  //   }).then(res => setActiveVehicleData(res.data))
-
-  //   return () => cancel()
-  // }, [activeVehicle, time])
+  function unselectActiveVehicle() {
+    setActiveVehicle()
+    setActiveVehiclePolyline()
+    setActiveVehicleTimetable()
+  }
 
   return <>
-    <VehiclesMap vehicles={vehicles} setActiveVehicle={setActiveVehicle} activeVehiclePolyline={activeVehiclePolyline} />
-    {activeVehicleData && activeVehicleData.line && <VehicleDetails activeVehicleData={activeVehicleData} />}
+    <VehiclesMap vehicles={vehicles} setActiveVehicle={setActiveVehicle} unselectActiveVehicle={unselectActiveVehicle} activeVehiclePolyline={activeVehiclePolyline} />
+    {activeVehicleTimetable && activeVehicleTimetable.line && <VehicleDetails activeVehicleTimetable={activeVehicleTimetable} />}
   </>
 }

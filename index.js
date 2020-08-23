@@ -40,45 +40,33 @@ app.get('/api/vehicles', (req, res) => {
 app.get('/api/path', (req, res) => {
   const {category, vehicleId} = req.query
 
-  const color = category === 'tram' ? 'red' : 'blue'
   const baseUrl = category === 'tram' ? 'http://www.ttss.krakow.pl' : 'http://91.223.13.70'
   const url = `${baseUrl}/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=${vehicleId}`
 
   axios.get(url).then(response => {
     const path = response.data.paths[0].wayPoints.map(point => [point.lat / 3_600_000, point.lon / 3_600_000])
-    res.send({ path, color })
+    res.send({ category, path })
   })
 })
 
 app.get('/api/timetable', (req, res) => {
-  var category = req.query.category
-  var vehicleId = req.query.vehicleId
-  var tripId = req.query.tripId
+  const {category, tripId} = req.query
 
-  if (category == 'tram') {
-    pathInfoUrl = 'http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=' + vehicleId
-    tripPassagesUrl = 'http://www.ttss.krakow.pl/internetservice/services/tripInfo/tripPassages?tripId=' + tripId
-  } else if (category == 'bus') {
-    pathInfoUrl = 'http://91.223.13.70/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=' + vehicleId
-    tripPassagesUrl = 'http://91.223.13.70/internetservice/services/tripInfo/tripPassages?tripId=' + tripId
-  }
+  const baseUrl = category === 'tram' ? 'http://www.ttss.krakow.pl' : 'http://91.223.13.70'
+  const url = `${baseUrl}/internetservice/services/tripInfo/tripPassages?tripId=${tripId}`
 
-  axios.all([
-    axios.get(tripPassagesUrl),
-    axios.get(pathInfoUrl)
-  ]).then(axios.spread((tripPassagesResponse, pathInfoResponse) => {
-    const line = tripPassagesResponse.data.routeName
-    const direction = tripPassagesResponse.data.directionText
-    const departures = tripPassagesResponse.data.old
-      .concat(tripPassagesResponse.data.actual)
+  axios.get(url).then(response => {
+    const line = response.data.routeName
+    const direction = response.data.directionText
+    const departures = response.data.old
+      .concat(response.data.actual)
       .map(item => ({
         time: item.actualTime,
         stopName: item.stop.name,
         status: item.status,
       }))
-    const path = pathInfoResponse.data.paths[0].wayPoints.map(point => [point.lat / 3_600_000, point.lon / 3_600_000])
-    res.send({category, line, direction, departures, path})
-  }))
+    res.send({ category, line, direction, departures })
+  })
 })
 
 app.get('*', (req, res) => {
