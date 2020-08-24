@@ -1,7 +1,7 @@
 import React from 'react'
 import { Map, TileLayer, ScaleControl } from 'react-leaflet'
-import VehicleMarkers from './VehicleMarkers.js'
-import ActiveVehiclePolyline from './ActiveVehiclePolyline.js'
+import VehicleMarkers from './VehicleMarkers'
+import VehiclePolyline from './VehiclePolyline'
 import './VehiclesMap.css'
 
 export default function VehiclesMap({ vehicles, setActiveVehicle, unselectActiveVehicle, activeVehiclePolyline }) {
@@ -16,6 +16,6 @@ export default function VehiclesMap({ vehicles, setActiveVehicle, unselectActive
     />
     <ScaleControl />
     <VehicleMarkers vehicles={vehicles} setActiveVehicle={setActiveVehicle} />
-    {activeVehiclePolyline && <ActiveVehiclePolyline activeVehiclePolyline={activeVehiclePolyline} />}
+    {activeVehiclePolyline && <VehiclePolyline activeVehiclePolyline={activeVehiclePolyline} />}
   </Map>
 }
