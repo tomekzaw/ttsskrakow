@@ -1,11 +1,14 @@
 {
   "name": "mapa",
   "version": "1.0.0",
-  "main": "backend/index.js",
+  "main": "index.js",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^0.20.0",
+    "express": "^4.17.1"
+  },
   "scripts": {
-    "start": "cd backend && node index.js",
+    "start": "node index.js",
     "heroku-postbuild": "cd frontend && yarn && yarn run build"
   }
 }
