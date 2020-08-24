@@ -69,7 +69,7 @@ app.get('/api/timetable', (req, res) => {
 })
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/frontend/build/index.html'))
+  res.sendFile(path.join(__dirname + '../frontend/build/index.html'))
 })
 
 const port = process.env.PORT || 5000
