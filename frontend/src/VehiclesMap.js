@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Map, TileLayer, ScaleControl } from 'react-leaflet'
 import VehicleMarkers from './VehicleMarkers'
 import VehiclePolyline from './VehiclePolyline'
@@ -8,6 +8,10 @@ export default function VehiclesMap({ vehicles, setActiveVehicle, unselectActive
   const center = [50.04, 19.96]
   const zoom = 12
 
+  const markers = useMemo(() => {
+    return <VehicleMarkers vehicles={vehicles} setActiveVehicle={setActiveVehicle} />
+  }, [vehicles, setActiveVehicle])
+
   return <Map center={center} zoom={zoom} onClick={unselectActiveVehicle}>
     <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
@@ -15,7 +19,7 @@ export default function VehiclesMap({ vehicles, setActiveVehicle, unselectActive
         subdomains="abcd"
     />
     <ScaleControl />
-    <VehicleMarkers vehicles={vehicles} setActiveVehicle={setActiveVehicle} />
+    {markers}
     {activeVehiclePolyline && <VehiclePolyline activeVehiclePolyline={activeVehiclePolyline} />}
   </Map>
 }
