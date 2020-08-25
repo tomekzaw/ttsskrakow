@@ -20,20 +20,17 @@ function parseVehiclesJson(data, category) {
     }))
 }
 
-app.get('/api/vehicles', (req, res) => {
+app.get('/api/vehicles', async (req, res) => {
   const url_A = 'http://91.223.13.70/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles'
   const url_T = 'http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles?positionType=CORRECTED'
 
-  axios.all([
-    axios.get(url_T),
-    axios.get(url_A)
-  ]).then(axios.spread((response_T, response_A) => {
-    const vehicles_T = parseVehiclesJson(response_T.data, 'tram')
-    const vehicles_A = parseVehiclesJson(response_A.data, 'bus')
+  const [response_T, response_A] = await axios.all([axios.get(url_T), axios.get(url_A)])
 
-    const vehicles = vehicles_T.concat(vehicles_A)
-    res.send(vehicles)
-  }))
+  const vehicles_T = parseVehiclesJson(response_T.data, 'tram')
+  const vehicles_A = parseVehiclesJson(response_A.data, 'bus')
+  const vehicles = vehicles_T.concat(vehicles_A)
+
+  res.send(vehicles)
 })
 
 app.get('/api/path', async (req, res) => {
