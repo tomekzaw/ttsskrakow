@@ -36,36 +36,38 @@ app.get('/api/vehicles', (req, res) => {
   }))
 })
 
-app.get('/api/path', (req, res) => {
+app.get('/api/path', async (req, res) => {
   const {category, vehicleId} = req.query
 
   const baseUrl = category === 'tram' ? 'http://www.ttss.krakow.pl' : 'http://91.223.13.70'
   const url = `${baseUrl}/internetservice/geoserviceDispatcher/services/pathinfo/vehicle?id=${vehicleId}`
 
-  axios.get(url).then(response => {
-    const path = response.data.paths[0].wayPoints.map(point => [point.lat / 3_600_000, point.lon / 3_600_000])
-    res.send({ category, path })
-  })
+  const response = await axios.get(url)
+
+  const path = response.data.paths[0].wayPoints.map(point => [point.lat / 3_600_000, point.lon / 3_600_000])
+
+  res.send({ category, path })
 })
 
-app.get('/api/timetable', (req, res) => {
+app.get('/api/timetable', async (req, res) => {
   const {category, tripId} = req.query
 
   const baseUrl = category === 'tram' ? 'http://www.ttss.krakow.pl' : 'http://91.223.13.70'
   const url = `${baseUrl}/internetservice/services/tripInfo/tripPassages?tripId=${tripId}`
 
-  axios.get(url).then(response => {
-    const line = response.data.routeName
-    const direction = response.data.directionText
-    const departures = response.data.old
-      .concat(response.data.actual)
-      .map(item => ({
-        time: item.actualTime,
-        stopName: item.stop.name,
-        status: item.status,
-      }))
-    res.send({ category, line, direction, departures })
-  })
+  const response = await axios.get(url)
+
+  const line = response.data.routeName
+  const direction = response.data.directionText
+  const departures = response.data.old
+    .concat(response.data.actual)
+    .map(item => ({
+      time: item.actualTime,
+      stopName: item.stop.name,
+      status: item.status,
+    }))
+
+  res.send({ category, line, direction, departures })
 })
 
 app.get('*', (req, res) => {
