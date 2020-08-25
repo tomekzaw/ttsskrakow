@@ -6,6 +6,14 @@ const app = express()
 
 app.use(express.static(path.join(__dirname, 'frontend/build')))
 
+function parseStopsJson(data) {
+  return data.stops.map(stop => ({
+    name: stop.name,
+    latitude: stop.latitude / 3_600_000,
+    longitude: stop.longitude / 3_600_000,
+  }))
+}
+
 function parseVehiclesJson(data, category) {
   return data.vehicles
     .filter(vehicle => !vehicle.isDeleted && vehicle.latitude && vehicle.longitude)
@@ -19,6 +27,20 @@ function parseVehiclesJson(data, category) {
       line: vehicle.name.split(' ', 1),
     }))
 }
+
+app.get('/api/stops', async (req, res) => {
+  const endpoint = '/internetservice/geoserviceDispatcher/services/stopinfo/stops?left=-648000000&right=648000000&top=324000000&bottom=-324000000'
+  const url_A = 'http://91.223.13.70' + endpoint
+  const url_T = 'http://www.ttss.krakow.pl' + endpoint
+
+  const [response_T, response_A] = await axios.all([axios.get(url_T), axios.get(url_A)])
+
+  const stops_T = parseStopsJson(response_T.data)
+  const stops_A = parseStopsJson(response_A.data)
+  const stops = stops_T.concat(stops_A)
+
+  res.send(stops)
+})
 
 app.get('/api/vehicles', async (req, res) => {
   const url_A = 'http://91.223.13.70/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles'
