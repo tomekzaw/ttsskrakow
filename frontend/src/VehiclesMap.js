@@ -1,14 +1,19 @@
 import React, { useMemo } from 'react'
 import { Map, TileLayer, ScaleControl } from 'react-leaflet'
+import StopMarkers from './StopMarkers'
 import VehicleMarkers from './VehicleMarkers'
 import VehiclePolyline from './VehiclePolyline'
 import './VehiclesMap.css'
 
-export default function VehiclesMap({ vehicles, setActiveVehicle, unselectActiveVehicle, activeVehiclePolyline }) {
+export default function VehiclesMap({ stops, vehicles, setActiveVehicle, unselectActiveVehicle, activeVehiclePolyline }) {
   const center = [50.04, 19.96]
   const zoom = 12
 
-  const markers = useMemo(() => {
+  const stopMarkers = useMemo(() => {
+    return <StopMarkers stops={stops} />
+  }, [stops])
+
+  const vehicleMarkers = useMemo(() => {
     return <VehicleMarkers vehicles={vehicles} setActiveVehicle={setActiveVehicle} />
   }, [vehicles, setActiveVehicle])
 
@@ -19,7 +24,8 @@ export default function VehiclesMap({ vehicles, setActiveVehicle, unselectActive
         subdomains="abcd"
     />
     <ScaleControl />
-    {markers}
+    {/* {stopMarkers} */}
+    {vehicleMarkers}
     {activeVehiclePolyline && <VehiclePolyline activeVehiclePolyline={activeVehiclePolyline} />}
   </Map>
 }

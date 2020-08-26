@@ -43,7 +43,7 @@ app.get('/api/stops', async (req, res) => {
 })
 
 app.get('/api/vehicles', async (req, res) => {
-  const url_A = 'http://91.223.13.70/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles'
+  const url_A = 'http://91.223.13.70/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles?positionType=CORRECTED'
   const url_T = 'http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles?positionType=CORRECTED'
 
   const [response_T, response_A] = await axios.all([axios.get(url_T), axios.get(url_A)])

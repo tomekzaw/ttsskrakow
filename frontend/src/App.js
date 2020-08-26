@@ -11,10 +11,15 @@ export default function App() {
 
   const [time, setTime] = useState(Date.now())
   const [vehicles, setVehicles] = useState([])
+  const [stops, setStops] = useState([])
 
   useEffect(() => {
     const interval = setInterval(() => setTime(Date.now()), 3000);
     return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    axios.get('/api/stops').then(res => setStops(res.data))
   }, [])
 
   useEffect(() => {
@@ -42,7 +47,11 @@ export default function App() {
   }
 
   return <>
-    <VehiclesMap vehicles={vehicles} setActiveVehicle={setActiveVehicle} unselectActiveVehicle={unselectActiveVehicle} activeVehiclePolyline={activeVehiclePolyline} />
+    <VehiclesMap
+      stops={stops}
+      vehicles={vehicles}
+      setActiveVehicle={setActiveVehicle}
+      unselectActiveVehicle={unselectActiveVehicle} activeVehiclePolyline={activeVehiclePolyline} />
     {activeVehicleTimetable && activeVehicleTimetable.line && <VehicleDetails activeVehicleTimetable={activeVehicleTimetable} />}
   </>
 }
