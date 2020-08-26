@@ -18,9 +18,9 @@ export default function App() {
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => {
-    axios.get('/api/stops').then(res => setStops(res.data))
-  }, [])
+  // useEffect(() => {
+  //   axios.get('/api/stops').then(res => setStops(res.data))
+  // }, [])
 
   useEffect(() => {
     axios.get('/api/vehicles').then(res => setVehicles(res.data))
