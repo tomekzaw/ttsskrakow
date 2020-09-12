@@ -10,5 +10,8 @@
   "scripts": {
     "start": "node index.js",
     "heroku-postbuild": "cd frontend && yarn && yarn run build"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
